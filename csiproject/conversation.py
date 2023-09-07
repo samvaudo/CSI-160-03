@@ -70,5 +70,5 @@ gpa2 = float(input("And the second semester GPA?\n"))
 avg = (gpa1+gpa2)/2
 
 
-
+#printing results
 print("Your results:\nName: "+name+"\nAge: "+str(age)+"\n# of siblings: "+str(siblings)+"\nFavorite Food: "+food+"\nDo(es) your sibling(s) share your favorite food? "+sib_shares_food+"\nAge of parents: "+str(parents_age)+"\nAverage GPA: "+str(avg))
