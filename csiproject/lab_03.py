@@ -75,6 +75,6 @@ print("Volume of a cylinder r = 4, h = 5", volume_cylinder(4, 5))  # test with i
 print("Volume of a cylinder r = 4.5, h = 5.5", volume_cylinder(4.5, 5.5))  # test with float
 print("Testing string val\n", volume_cylinder("a", "b"))  # test with str
 
-print("2^n, n = 5 is", power_of_two(5))  # test with
+print("2^n, n = 5 is", power_of_two(5))  # test with int
 print("2^n, n = 5.5 is", power_of_two(5.5))  # test with float
 print("Testing string val", power_of_two("5"))  # test with str
