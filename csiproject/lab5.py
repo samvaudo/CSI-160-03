@@ -6,11 +6,12 @@ def number_of_zeros(grades):
 
     return (int) - the number of 0% grades
     """
-    count_zeroes = 0
-    for grade in grades:
-        if grade == 0:
-            count_zeroes += 1
-    return count_zeroes
+    count_zeroes = 0  # setting an index
+    for grade in grades:  # going through the list
+        if grade == 0:  # if it's a zero
+            count_zeroes += 1  # count it
+    return count_zeroes  # return the total
+
 
 def median(numbers):
     """Find the median of the given list of numbers.
@@ -25,15 +26,15 @@ def median(numbers):
 
     return (numeric) The median value as either an int or float
     """
-    sorted_numbers = numbers
+    sorted_numbers = numbers # sort the list so median can be applied, set new variable so you don't override data
     sorted_numbers.sort()
-    median_numbers = 0
+    median_numbers = 0 # setting value so it won't traceback if median somehow fails
     length_numbers = len(sorted_numbers)
-    if length_numbers%2 == 0:
-        median_numbers = sorted_numbers[int(length_numbers/2)] + sorted_numbers [int(length_numbers/2 - 1)]
-        median_numbers = median_numbers/2
-    else:
-        median_numbers = sorted_numbers[int(length_numbers/2 - 0.5)]
+    if length_numbers % 2 == 0: # if the length is even
+        median_numbers = sorted_numbers[int(length_numbers / 2)] + sorted_numbers[int(length_numbers / 2 - 1)] # finds the two elements that are in the center of the list
+        median_numbers = median_numbers / 2 # averaging the two to determine median
+    else: # if the list is odd
+        median_numbers = sorted_numbers[int(length_numbers / 2 - 0.5)] # find the center of the list
     return median_numbers
 
 
@@ -47,10 +48,25 @@ def top_quartile(grades):
 
     return (list of floats) - The top 25%
     """
-    sorted_grades = grades
+    sorted_grades = grades # sorting, making new varialbe so it doesn't override
     sorted_grades.sort()
+    length_grades = len(sorted_grades)
+    median1 = median(grades) #finding the number at which the top 50% is (median is 50% quartile)
+    index1 = 0
+    for i in range(length_grades):
+        if median1 <= sorted_grades[i]: # finding the element at which the 50% quartile occurs
+            index1 = i
+            break
 
-    pass
+    top50 = sorted_grades[index1:] # take the top 50% of the list
+    median2 = median(top50) # finding the top 50% of the 50% (this will result in a top 25%)
+    index2 = 0
+    for i in range(len(top50)):
+        if median2 <= top50[i]:
+            index2 = i
+            break
+    final_list = top50[index2:] # returns the list from where the 25% occurs to the end
+    return final_list
 
 
 def domain_name_extractor(url):
@@ -64,6 +80,12 @@ def domain_name_extractor(url):
 
     return (string) The domain name or IP address. Example: docs.python.org
     """
+    start = url.find('//') + 2 #find where the first '//' occurs, +2 is to remove the extra '//' characters out of the index
+    temp_url = url[start:] # splicing the string at the newly found start
+    end = temp_url.find('/') + start # finding the next '/' occurs, start is added since it will be applied to the original url, not the temp_url, accounting for index addition
+    returned_url = url[start:end] # splicing the url of where the '//' and '/' both occur to return the domain name
+    return returned_url
+
     pass
 
 
