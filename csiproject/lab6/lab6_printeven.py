@@ -7,8 +7,9 @@ def print_even(numbers):
     :return: None
     """
     for i in numbers:
-        if i%2==0:
+        if i % 2 == 0: # If the number is even
             print(i)
     pass
 
-print_even([1,2,3,4,5,6,7,10])
+
+print_even([1, 2, 3, 4, 5, 6, 7, 10])

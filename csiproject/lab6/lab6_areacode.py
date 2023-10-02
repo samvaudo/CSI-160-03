@@ -10,9 +10,9 @@ def add_area_code(phone_numbers, area_code):
     :param area_code: (str) The area code to add Example: '802'
     :return: (list) A list of phone numbers with the area code Example: ['802-555-1212']
     """
-    temp_phone_numbers = phone_numbers
+    temp_phone_numbers = phone_numbers # making sure phone_numbers are unchanged
     for i in range(len(temp_phone_numbers)):
-        temp_phone_numbers[i] = str(area_code)+'-'+temp_phone_numbers[i]
+        temp_phone_numbers[i] = str(area_code)+'-'+temp_phone_numbers[i] # appending area code to each phone number
 
     return temp_phone_numbers
 
