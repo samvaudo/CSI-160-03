@@ -1,5 +1,5 @@
 # Working with lists and tuples
-
+'''
 x = [1, 2, 4, 6, 8, 0]
 y = x
 
@@ -23,3 +23,13 @@ print(c)
 
 # b.append(4)
 print(b)
+'''
+
+class_days = ("Mondays", "Tuesdays", "Wednesday", "Thursday", "Friday")
+for i in class_days:
+    if i == "Tuesdays":
+        pos = class_days.index(i)
+        print("Class meets on", i)
+        print("Index position:", pos)
+    else:
+        pass
