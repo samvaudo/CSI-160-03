@@ -23,9 +23,9 @@ print(c)
 
 # b.append(4)
 print(b)
-'''
 
 class_days = ("Mondays", "Tuesdays", "Wednesday", "Thursday", "Friday")
+
 for i in class_days:
     if i == "Tuesdays":
         pos = class_days.index(i)
@@ -33,3 +33,8 @@ for i in class_days:
         print("Index position:", pos)
     else:
         pass
+
+'''
+# list() and tuple() convert
+
+
