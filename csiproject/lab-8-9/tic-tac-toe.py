@@ -1,4 +1,3 @@
-import replit
 import time
 
 # Constants in are named in all caps (PEP8 Standard)
@@ -8,18 +7,17 @@ EMPTY = ' '
 TIE_GAME = 'tie'
 BOARD_SIZE = 3
 
-current_player = PLAYER_X # Player X goes first
+current_player = PLAYER_X  # Player X goes first
 
 # Builds an EMPTY board
-board = [[EMPTY,EMPTY,EMPTY],
-        [EMPTY,EMPTY,EMPTY],
-        [EMPTY,EMPTY,EMPTY]]
+board = [[EMPTY, EMPTY, EMPTY],
+         [EMPTY, EMPTY, EMPTY],
+         [EMPTY, EMPTY, EMPTY]]
 
 
 def print_board():
     # Clear the screen
-    replit.clear()
-    
+
     """Prints the board to the console"""
     print('    0   1   2')
     print('  -------------')
@@ -28,8 +26,7 @@ def print_board():
         for square in row:
             print(' | ' + square, end="")
         print(' |')
-        print('  -------------') 
-
+        print('  -------------')
 
 
 def is_empty(row, col):
@@ -38,9 +35,11 @@ def is_empty(row, col):
     params row, col: (int) The row and Column to Check
     return: (boolean) If the row is EMPTY
     """
-    # TODO Part #1 complete is_empty()
-    pass
-        
+    if board[row][col] == EMPTY:
+        return True
+    else:
+        return False
+
 
 def move(player, row, col):
     """Makes a game move
@@ -53,8 +52,12 @@ def move(player, row, col):
     param row, col: (int) The row and Column to move to
     return: (boolean) Success of the move
     """
-    #TODO Part #2 complete move()
-    pass
+    if is_empty(row, col):
+        board[row][col] = player
+        return True
+    else:
+        return False
+
 
 def determine_winner():
     """Determine if there is a winner
@@ -63,21 +66,52 @@ def determine_winner():
             Returns PLAYER_O or PLAYER_X if one of them won. 
             Returns 'tie' if noone wins
     """
-    #TODO Part #3 complete determine_winner()
-    
+
     # Step 1: Check the horizontals looking for a winner. 
-    #         If so return winner.
+    #         If so return winner
+    for i in board:
+        if i == [PLAYER_X, PLAYER_X, PLAYER_X]:
+            return PLAYER_X
+        elif i == [PLAYER_O, PLAYER_O, PLAYER_O]:
+            return PLAYER_O
+        else:
+            continue
+
     # Step 2: Check the verticals looking for a winner
     #         If so return winner.
+    for i in range(BOARD_SIZE):
+        if is_empty(0, i):
+            continue
+        else:
+            if (board[0][i] == board[1][i]) & (board[0][i] == board[2][i]):
+                return board[0][i]
+            else:
+                continue
+
     # Step 3: Check the diagonals looking for a winner
     #         If so return winner.
-    # Step 4: Check to see if there are empty squares. 
-    #         If there are empty squares, return None because 
-    #         noone has won the game yet
-    #         If there are no empty squares return TIE_GAME
-    #         because we didn't find a winner and all moves are made
-    return None
+    diagonal_winner = board[1][1]
+    if is_empty(0, 0):
+        pass
+    elif (board[0][0] == board[1][1]) & (board[1][1] == board[2][2]):
+        return diagonal_winner
+    else:
+        pass
+    if is_empty(0, 2):
+        pass
+    elif (board[0][2] == board[1][1]) & (board[1][1] == board[2][0]):
+        return diagonal_winner
+    else:
+        pass
 
+    # IF TIE GAME
+    for r in range(BOARD_SIZE):
+        for c in range(BOARD_SIZE):
+            if is_empty(r, c):
+                return None
+            else:
+                continue
+    return TIE_GAME
 
 
 while True:
@@ -100,19 +134,17 @@ while True:
     winner = determine_winner()
     if winner in (PLAYER_O, PLAYER_X):
         print_board()
-        print('Congratulations', winner,'!!! You won!')
+        print('Congratulations', winner, '!!! You won!')
         print('But you are all winners')
         break
 
     if winner == TIE_GAME:
         print_board()
         print("It's a tie!!!")
-        break  
+        break
 
-    # Let the other player have a turn
+        # Let the other player have a turn
     if current_player == PLAYER_O:
         current_player = PLAYER_X
     else:
         current_player = PLAYER_O
-
-
