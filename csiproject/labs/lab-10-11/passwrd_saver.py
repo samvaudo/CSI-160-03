@@ -1,6 +1,7 @@
 import pickle
 import sys
 import pwnedpasswords
+import os
 
 # The password list - We start with it populated for testing purposes
 entries = {'yahoo': {'username': 'johndoe', 'password': 'cus#u%S tu', 'url': 'https://www.yahoo.com'},
@@ -22,17 +23,20 @@ What would you like to do:
 7. Quit program
 8. Print dictionary for testing
 Please enter a number (1-8)"""
+
 edit_text = """
 What do you want to edit?
 1. Username
 2. Password
 3. URL
 4. Exit Menu
-"""
-edit_dict = {'1':'username',
-             '2':'password',
-             '3':'url',
-             '4':'exit'}
+Please enter a number (1-4):"""
+
+edit_dict = {'1': 'username',
+             '2': 'password',
+             '3': 'url',
+             '4': 'exit'}
+
 
 def password_encrypt(unencrypted_message, key):
     """Returns an encrypted message using a caesar cypher
@@ -67,8 +71,16 @@ def load_password_file():
 
     :param file_name (string) The file to load.  Must be a pickle file in the correct format
     """
+    file_name = input("Enter the password file to be loaded(file extension will be auto-filled): ")
+
     global entries, encryption_key
-    entries, encryption_key = pickle.load(open(password_file_name, "rb"))
+    try:
+        entries, encryption_key = pickle.load(open(file_name+'.pkl', "rb"))
+        print("File Loaded!")
+    except FileNotFoundError:
+        print("File not found. Aborting...")
+    except TypeError:
+        print("Empty File Name. Aborting....")
 
 
 def save_password_file():
@@ -76,7 +88,14 @@ def save_password_file():
 
     :param file_name (string) The file to save.
     """
-    pickle.dump((entries, encryption_key), open(password_file_name, "wb"))
+    file_name = input("Enter the password file to be saved (No file extension):")
+    try:
+        pickle.dump((entries, encryption_key), open(file_name+'.pkl', "wb"))
+        print("File saved!")
+    except FileNotFoundError:
+        print("File not found. Aborting....")
+    except TypeError:
+        print("Empty File Name. Aborting....")
 
 
 def add_entry():
@@ -93,74 +112,149 @@ def add_entry():
     print("Entry Saved!")
 
 
-def print_entry():
-    """Asks the user for the name of the entry and prints all related information in a pretty format. Includes all information about an entry.
+def print_entry(entry_name):
     """
-    work_entry = {}
-    work_user = ""
-    work_pass_encrypted = ""
-    work_pass_decrypted = ""
-    work_url = ""
-
-    print("Which entry do you want to lookup the information for?")
-    for key in entries:
-        print(key)
-    entry = input('Enter entry name: ')
-    if entry in entries:
-        work_entry = entries[entry]
-        work_user = work_entry['user']
+    Prints entry data (name, username, password (unencrypted) and url
+    :param entry_name: Name of entry
+    :return: None
+    """
+    try:
+        work_entry = entries[entry_name]
         work_pass_encrypted = work_entry['password']
-        work_pass_decrypted = password_decrypt(work_pass_encrypted, encryption_key)
-        work_url = work_entry['url']
         print("Data found!")
-        print("The data for entry", entry)
-        print("Username:", work_user)
-        print("Password:", work_pass_decrypted)
-        print("URL:", work_url)
-    else:
+        print("The data for entry", entry_name)
+        print("Username:", work_entry['username'])
+        print("Password:", password_decrypt(work_pass_encrypted, encryption_key))
+        print("URL:", work_entry['url'])
+    except KeyError:
         print("Data entry not found (Maybe you misspelled it?). Aborting....")
 
-    """Asks the user for the name of an entry, and what variable to edit. Asks in a pretty format
-    """
-    work_entry = {}
-    work_user = ""
-    work_pass_encrypted = ""
-    work_pass_decrypted = ""
-    work_url = ""
 
-    print("Which entry do you want to lookup the information for?")
+def lookup_entry():
+    """Asks the user for the name of the entry and prints all related information in a pretty format. Includes all information about an entry.
+    """
+    print("Lookup Entries")
     for key in entries:
         print(key)
-    entry = input('Enter entry name: ')
-    if entry in entries:
-        if entry in entries:
-            work_entry = entries[entry]
-            work_user = work_entry['user']
-            work_pass_encrypted = work_entry['password']
-            work_pass_decrypted = password_decrypt(work_pass_encrypted, encryption_key)
-            work_url = work_entry['url']
-            print("Data found!")
-            print("The data for entry", entry)
-            print("Username:", work_user)
-            print("Password:", work_pass_decrypted)
-            print("URL:", work_url)
-            while True:
-                choice = input(edit_text)
-                if choice in edit_dict and edit_dict[choice]:
-                    if choice == 4:
-                        print("Canceling...")
-                        break
-                    elif choice == 2:
-                        new_pass = input("Enter new password to override?:")
+    entry = input('Which entry do you want to lookup the information for?:')
+    print_entry(entry)
 
 
+def edit_username(entry_name):
+    """
+    Changes a username of the entry_name to what the user wants
+
+    :param entry_name: name of the entry
+    :return: True if username changed, False if canceled
+    """
+    try:
+        new_user = input("Enter a new username to override: (to cancel, press ENTER instead of a username)")
+        if new_user != '':
+            entries[entry_name]['username'] = new_user
+            print("Entry Updated!")
+            return True
         else:
-            print("Data entry not found (Maybe you misspelled it?). Aborting....")
+            print("Empty entry. Aborting....")
+            return False
+    except KeyError:
+        print("An error occurred. Aborting....")
+        return False
+
+
+def edit_passwd(entry_name):
+    """
+    Changes a password of the entry_name to what the user wants
+
+    :param entry_name: name of the entry
+    :return: True if password changed, False if canceled
+    """
+    try:
+        new_pass = input("Enter new password to override: (to cancel, press ENTER instead of a password)")
+        if new_pass != '':
+            new_pass_encrypt = password_encrypt(new_pass, encryption_key)
+            entries[entry_name]['password'] = new_pass_encrypt
+            print("Entry updated!")
+            return True
+        else:
+            print("Empty entry. Aborting....")
+            return False
+    except KeyError:
+        print("An error occurred. Aborting...")
+        return False
+
+
+def edit_url(entry_name):
+    """
+    Changes the url of the entry_name to what the user wants
+    :param entry_name: name of the entry
+    :return: True if url changed, False if canceled
+    """
+    try:
+        new_url = input("Enter a new url to override:")
+        if new_url != '':
+            entries[entry_name]['url'] = new_url
+            print("Entry Updated!")
+            return True
+        else:
+            print("Empty entry. Aborting....")
+            return False
+    except KeyError:
+        print("An error occurred. Aborting....")
+        return False
+
+
+def edit_entry():
+    """Asks the user for the name of an entry, and what variable to edit. Asks in a pretty format
+    """
+    print("Editing Entries")
+    for key in entries:
+        print(key)
+    entry = input('Which entry do you want to edit?:')
+    print_entry(entry)
+    while True:
+        choice = input(edit_text)
+        if choice in edit_dict and edit_dict[choice]:
+            if choice == '1':
+                if edit_username(entry):
+                    break
+                else:
+                    continue
+            elif choice == '2':
+                if edit_passwd(entry):
+                    break
+                else:
+                    continue
+            elif choice == '3':
+                if edit_url(entry):
+                    break
+                else:
+                    continue
+            elif choice == '4':
+                print("Canceling...")
+                break
+            else:
+                print("Data entry not found (Maybe you misspelled it?). Aborting....")
+                break
+
 
 def del_entry():
     """Asks the user for the name of an entry, and to confirm deleting it. Asks in a pretty format
     """
-    pass
+    print("Deleting Entries")
+    for key in entries:
+        print(key)
+    entry = input('Which entry do you want to delete?:')
+    print_entry(entry)
+    try:
+        confirmation = input("Delete chosen item?: (y/n):")
+        if confirmation == 'y':
+            del entries[entry]
+            print("Entry Removed")
+        else:
+            print("Canceling...")
+    except KeyError:
+        print("Data entry not found (Maybe you misspelled it?). Aborting....")
+
 
 def end_program():
     sys.exit()
@@ -172,7 +266,7 @@ def print_dictionary():
 
 menu_dict = {'1': load_password_file,
              '2': add_entry,
-             '3': print_entry,
+             '3': lookup_entry,
              '4': edit_entry,
              '5': del_entry,
              '6': save_password_file,
@@ -183,5 +277,6 @@ while True:
     user_choice = input(menu_text)
     if user_choice in menu_dict and menu_dict[user_choice]:
         menu_dict[user_choice]()
+        os.system("cls")
     else:
         print('Not a valid choice')
