@@ -102,6 +102,7 @@ def add_entry():
     """Adds an entry with an entry title, username, password and url
 
     Includes all user interface interactions to get the necessary information from the user
+    :return None
     """
     title = input("What is the title for this addition?:")
     username = input("What is the username for this addition?:")
@@ -126,7 +127,7 @@ def print_entry(entry_name):
         print("Username:", work_entry['username'])
         print("Password:", password_decrypt(work_pass_encrypted, encryption_key))
         print("URL:", work_entry['url'])
-    except KeyError:
+    except KeyError: # If entry_name not in entries
         print("Data entry not found (Maybe you misspelled it?). Aborting....")
 
 
@@ -134,7 +135,7 @@ def lookup_entry():
     """Asks the user for the name of the entry and prints all related information in a pretty format. Includes all information about an entry.
     """
     print("Lookup Entries")
-    for key in entries:
+    for key in entries: # lists all entry names
         print(key)
     entry = input('Which entry do you want to lookup the information for?:')
     print_entry(entry)
@@ -157,7 +158,7 @@ def edit_username(entry_name):
             print("Empty entry. Aborting....")
             return False
     except KeyError:
-        print("An error occurred. Aborting....")
+        print("An error occurred. Aborting....") # if the input cant be taken for some reason
         return False
 
 
@@ -179,7 +180,7 @@ def edit_passwd(entry_name):
             print("Empty entry. Aborting....")
             return False
     except KeyError:
-        print("An error occurred. Aborting...")
+        print("An error occurred. Aborting...") # if the input cant be taken for some reason
         return False
 
 
@@ -199,7 +200,7 @@ def edit_url(entry_name):
             print("Empty entry. Aborting....")
             return False
     except KeyError:
-        print("An error occurred. Aborting....")
+        print("An error occurred. Aborting....") # if the input cant be taken for some reason
         return False
 
 
@@ -214,7 +215,7 @@ def edit_entry():
     while True:
         choice = input(edit_text)
         if choice in edit_dict and edit_dict[choice]:
-            if choice == '1':
+            if choice == '1': # if tree to determine what edit function to run
                 if edit_username(entry):
                     break
                 else:
@@ -246,7 +247,7 @@ def del_entry():
     entry = input('Which entry do you want to delete?:')
     print_entry(entry)
     try:
-        confirmation = input("Delete chosen item?: (y/n):")
+        confirmation = input("Delete chosen item?: (y/n):") # CONFIRMATION FOR DELETION
         if confirmation == 'y':
             del entries[entry]
             print("Entry Removed")
@@ -277,6 +278,6 @@ while True:
     user_choice = input(menu_text)
     if user_choice in menu_dict and menu_dict[user_choice]:
         menu_dict[user_choice]()
-        os.system("cls")
+        print('\n'*80) # clears screen
     else:
         print('Not a valid choice')
