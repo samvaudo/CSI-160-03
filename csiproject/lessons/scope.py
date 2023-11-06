@@ -1,10 +1,10 @@
 #Understanding scope in a Python file
-
-x = 0  #Global variable
+import my_module
+x = 0 #global variable
 def my_function():
     global x
     x += 1
-    y = 5 #Local variable, bound to the function
+    y = 5#local variable, bound to the function
     print(x)
     print(y)
 
@@ -19,7 +19,14 @@ def outer_function():
         z = 0
         print(z)
 
-    inner_function()
+    inner_function()#only runs if outer_function() "succeeds"
 
-outer_function()
+#outer_function()
 
+def my_math():
+    r = int(input("Radius:"))
+    area = my_module.p*my_module.math.pow(r,2)
+    print(area)
+
+my_math()
+print(dir(my_module))
