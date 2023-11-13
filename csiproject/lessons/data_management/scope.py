@@ -25,7 +25,7 @@ def outer_function():
 
 def my_math():
     r = int(input("Radius:"))
-    area = my_module.p*my_module.math.pow(r,2)
+    area = my_module.p * my_module.math.pow(r, 2)
     print(area)
 
 my_math()
