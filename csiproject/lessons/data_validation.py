@@ -1,85 +1,112 @@
-#Data Validation
 
-var = 'Here is some string data with the number two in it'
-pswd = 'asd213#!sd09'
+var = "Here is some string data with the number two in it"
+pswd = "asd213#!sd09"
 num = 23423
-num2 = '23423.467'
-space = '      '
-name = 'John Doe'
+num2 = '23423.468'
+space = '     '
+fullname = 'John Doe'
+book = 'Why I Love Python Programming'
+#print(len(pswd))
 
 '''
-isalpha(): only alphabet characters
-isspace(): only spaces
-isdecimal(): is a decimal number
-isalnum(): is alpha-numeric
-istitle(): all words start with an uppercase
+isupper() and islower()
 '''
+name = 'ABC'
+names = 'asdasdasd'
+#print(name.isupper()) #If all characters are upper case, Python prints True
+#print(names.islower())
 
 '''
-print("Is alpha:",var.isalpha())
-print("Is a space:",var.isspace())
-print("Is a decimal:",str(num).isdecimal())
-#print(float(num2))
-print("Is alphanumeric:",var.isalnum())
-print("Full Name:",name.istitle())
-'''
-#VALIDATION FUNCTIONS
-'''
-# startswith() and endswith()
+String methods:
+isalpha(): All alpha characters
+isalnum(): Combination of alpha and numeric chars.
+isdecimal(): Numeric values, not floating point values
+isspace(): A space
+istitle(): Each word begins with an upper case letter
+
+print(var.isalpha())
+print(space.isspace())
+print(str(num).isdecimal())
+print(float(num2))
+print(var.isalnum())
+print('Full Name:',fullname.istitle())
+print(book.istitle())
+
+#startswith() and endswith()
 course = 'CSI-160'
 if course.startswith('CSI') and course.endswith('160'):
-    print('Valid Course.')
+    print("Valid course.")
 else:
-    print('Course is not valid.')
+    print("Course number not valid.")
 
-isValid = False
+valid = False
 for i in var:
     if i.isalpha() or i.isspace():
-        isValid = True
+        valid = True
     else:
-        isValid = False
+        valid = False
         break
-if isValid:
-    print('Valid input.')
+if valid == True:
+    print('Valid input')
 else:
-    print('Data integrity issues.')
+    print('Data integrity issues')
 '''
-
 '''
 Password Validator
-1. Must be 8-12 characters long
-2. At least 1 uppercase latter
-3. At least 1 lowercase letter
-4. At least 1 number
-5. At least 1 valid character
+1. Must be 8 to 12 characters
+2. At least one uppercase letter
+3. At least one lowercase letter
+4. At least one number
+5. At least one valid special character
 '''
-def paswd_validator():
-    chars = ['@','%','*','$','#'] #valid special character
+def pswd_validator():
+    chars = ['@', '%', '*', '$', '#'] #Valid special characters
+    upltr = False
+    lowltr = False
+    num = False
+    special = False
     password = input('Enter a password:')
     length = len(password)
     if length < 8 or length > 12:
-        print('Invalid password: please enter a 8-12 characters')
-        paswd_validator()
+        print('Invalid password, please enter 8 to 12 characters.')
+        pswd_validator()
     else:
-        has_upper = False
-        has_lower = False
-        has_special = False
-        has_number = False
-        for char in password:
-            if char.isupper():
-                has_upper = True
-            elif char.islower():
-                has_lower = True
-            elif char in chars:
-                has_special = True
-            elif char.isdigit():
-                has_number = True
+        for k in password:
+            if k.isupper():
+                upltr = True
+            elif k.islower():
+                lowltr = True
+            elif k.isdigit():
+                num = True
             else:
-                continue
-        if has_upper and has_lower and has_special and has_number:
-            print("Valid Password!")
-        else:
-            print('Invalid password: Not complex enough')
+                for m in chars:
+                    if m == k:
+                        special = True
+                    else:
+                        continue
+
+    if upltr == True and lowltr == True and num == True and special == True:
+        print('Valid password')
+    else:
+        print("Process failed")
+
+pswd_validator()
 
 
-paswd_validator()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
