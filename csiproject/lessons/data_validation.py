@@ -1,4 +1,3 @@
-
 var = "Here is some string data with the number two in it"
 pswd = "asd213#!sd09"
 num = 23423
@@ -6,15 +5,15 @@ num2 = '23423.468'
 space = '     '
 fullname = 'John Doe'
 book = 'Why I Love Python Programming'
-#print(len(pswd))
+# print(len(pswd))
 
 '''
 isupper() and islower()
 '''
 name = 'ABC'
 names = 'asdasdasd'
-#print(name.isupper()) #If all characters are upper case, Python prints True
-#print(names.islower())
+# print(name.isupper()) #If all characters are upper case, Python prints True
+# print(names.islower())
 
 '''
 String methods:
@@ -59,54 +58,37 @@ Password Validator
 4. At least one number
 5. At least one valid special character
 '''
+
+
 def pswd_validator():
-    chars = ['@', '%', '*', '$', '#'] #Valid special characters
-    upltr = False
-    lowltr = False
-    num = False
-    special = False
+    chars = ['@', '%', '*', '$', '#']  # Valid special characters
+    has_upper = False
+    has_lower = False
+    has_num = False
+    has_special = False
     password = input('Enter a password:')
     length = len(password)
     if length < 8 or length > 12:
         print('Invalid password, please enter 8 to 12 characters.')
         pswd_validator()
+        exit()
     else:
         for k in password:
             if k.isupper():
-                upltr = True
+                has_upper = True
             elif k.islower():
-                lowltr = True
+                has_lower = True
             elif k.isdigit():
-                num = True
+                has_num = True
+            elif k in chars:
+                has_special = True
             else:
-                for m in chars:
-                    if m == k:
-                        special = True
-                    else:
-                        continue
+                continue
 
-    if upltr == True and lowltr == True and num == True and special == True:
+    if has_upper and has_lower and has_num and has_special:
         print('Valid password')
     else:
         print("Process failed")
 
+
 pswd_validator()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
