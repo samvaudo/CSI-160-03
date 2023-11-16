@@ -55,7 +55,7 @@ def chooseSentence():
     print("Enter your sentence:")
     sentence = input()
     for i in sentence:
-        if (i.isalpha() == True or i.isspace() == True):
+        if i.isalpha() == True or i.isspace() == True:
             print(convert_sentence(sentence))
             choose_process()
         else:
