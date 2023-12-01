@@ -5,7 +5,7 @@ import json
 import requests
 import sys
 
-api_key = 'c1e469faee850df34a1c55825f48e8a1'
+api_key = 'HA YOU THOUGHT'
 
 
 # Gets location from input
